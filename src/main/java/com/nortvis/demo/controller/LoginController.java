@@ -1,6 +1,6 @@
 package com.nortvis.demo.controller;
 
-import com.nortvis.demo.configuration.JwtUtil;
+import com.nortvis.demo.configuration.util.JwtUtil;
 import com.nortvis.demo.dto.AuthenticationRequest;
 import com.nortvis.demo.dto.AuthenticationResponse;
 import com.nortvis.demo.exception.ForbiddenException;

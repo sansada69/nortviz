@@ -1,4 +1,4 @@
-package com.nortvis.demo.configuration;
+package com.nortvis.demo.configuration.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

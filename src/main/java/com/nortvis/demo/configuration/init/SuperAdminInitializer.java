@@ -1,4 +1,4 @@
-package com.nortvis.demo.configuration;
+package com.nortvis.demo.configuration.init;
 
 import com.nortvis.demo.entity.User;
 import com.nortvis.demo.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.nortvis.demo.configuration;
+package com.nortvis.demo.configuration.security;
 
 import com.nortvis.demo.service.impl.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

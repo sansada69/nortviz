@@ -54,6 +54,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/login");
+        web.ignoring().antMatchers("/login", "/test");
     }
 }

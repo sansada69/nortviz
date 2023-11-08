@@ -4,7 +4,7 @@ import com.nortvis.demo.configuration.util.JwtUtil;
 import com.nortvis.demo.dto.AuthenticationRequest;
 import com.nortvis.demo.dto.AuthenticationResponse;
 import com.nortvis.demo.exception.ForbiddenException;
-import com.nortvis.demo.exception.InvalidUserException;
+import com.nortvis.demo.exception.NotFoundException;
 import com.nortvis.demo.service.impl.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class LoginController {
             final String jwt = jwtUtil.generateToken(userDetails);
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } catch (UsernameNotFoundException ex) {
-            throw new InvalidUserException("Username not found");
+            throw new NotFoundException("Username not found");
         }
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/image")
 @RequiredArgsConstructor
@@ -29,5 +31,10 @@ public class ImageController {
     @DeleteMapping(value = "/{imageId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<Boolean>> deleteImage(@PathVariable("imageId") String imageId) {
         return ResponseEntity.ok(new ApiResponse<>(imageService.deleteImage(imageId)));
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<Set<ImageDto>>> getImages() {
+        return ResponseEntity.ok(new ApiResponse<>(imageService.getImages()));
     }
 }

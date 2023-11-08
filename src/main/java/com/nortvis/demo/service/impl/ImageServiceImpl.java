@@ -17,13 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import static com.nortvis.demo.service.mapper.MapperUtility.toImage;
-import static com.nortvis.demo.service.mapper.MapperUtility.toObject;
+import static com.nortvis.demo.service.mapper.MapperUtility.*;
 
 @Slf4j
 @Service
@@ -41,22 +37,14 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public ImageDto uploadImage(MultipartFile image) {
         log.info("Request received to upload image");
-        String userName = userService.getLoggedInUserName();
-        User user = userService.getUserEntity(userName);
+        User user = getUser();
         // Imgur upload image API call
         ImgurApiResponse<Map<String, Object>> imgurApiResponse = imgurService.uploadImage(image, clientId);
         Optional<Image> imageOptional = toImage(imgurApiResponse);
         if (imageOptional.isEmpty())
             throw new InternalServerError("Imgur API service is failing");
-        Set<Image> imageSet;
-        if (Objects.isNull(user.getImageSet())) {
-            imageSet = Set.of(imageOptional.get());
-        } else  {
-            imageSet = user.getImageSet();
-            imageSet.add(imageOptional.get());
-        }
-        user.setImageSet(imageSet);
-        userService.updateUser(user);
+        imageOptional.get().setUser(user);
+        imageRepository.save(imageOptional.get());
         log.info("Uploaded image successfully");
         return toObject(imageOptional.get(), ImageDto.class);
     }
@@ -81,5 +69,17 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.deleteById(imageId);
         imgurService.deleteImage(image.get().getDeleteHash(), clientId);
         return true;
+    }
+
+    @Override
+    public Set<ImageDto> getImages() {
+        User user = getUser();
+        return toObjectSet(user.getImageSet(), ImageDto.class);
+    }
+
+    private User getUser() {
+        String userName = userService.getLoggedInUserName();
+        User user = userService.getUserEntity(userName);
+        return user;
     }
 }

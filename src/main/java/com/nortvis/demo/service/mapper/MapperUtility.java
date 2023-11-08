@@ -1,10 +1,8 @@
 package com.nortvis.demo.service.mapper;
 
-import com.nortvis.demo.dto.ImageDto;
 import com.nortvis.demo.entity.Image;
 import com.nortvis.demo.exception.MapperException;
 import com.nortvis.demo.feignclient.dto.ImgurApiResponse;
-import com.nortvis.demo.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
@@ -12,6 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.nortvis.demo.constants.ApiConstants.*;
 
@@ -29,6 +29,13 @@ public class MapperUtility {
         }
         BeanUtils.copyProperties(t, dto);
         return dto;
+    }
+
+    public static <T, D> Set<D> toObjectSet(Set<T> t, Class<D> dtoClass) {
+        log.info("Invoked list toDtoList service");
+        if (t == null)
+            return null;
+        return t.stream().map(m -> toObject(m, dtoClass)).collect(Collectors.toSet());
     }
 
     public static Optional<Image> toImage(ImgurApiResponse imgurApiResponse) {
